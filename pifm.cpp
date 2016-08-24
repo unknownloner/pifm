@@ -242,7 +242,15 @@ public:
             time++;
                 
             while( (ACCESS(DMABASE + 0x04 /* CurBlock*/) & ~ 0x7F) ==  (int)(instrs[bufPtr].p)) {
+                //SLEEP IS FOR THE WEAK!
+                //NOOP loop instead of sleeping, because sleeping is not
+                //accurate enough for audio handling. Yes this maxes the CPU,
+                //but it's important for accurate broadcasts.
+                //However, leave the old stuff as an option in case a user
+                //cares more about their CPU usage than audio accuracy.
+#ifdef NO_SPINLOCK
                 usleep(sleeptime);  // are we anywhere in the next 4 instructions?
+#endif
             }
             
             // Create DMA command to set clock controller to output FM signal for PWM "LOW" time.
