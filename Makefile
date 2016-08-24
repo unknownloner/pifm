@@ -3,3 +3,7 @@ all: pifm
 
 clean:
 	rm -f pifm *.o
+
+install: pifm
+	cp pifm /usr/bin/pifm
+
